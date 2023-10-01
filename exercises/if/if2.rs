@@ -5,33 +5,47 @@
 //
 // Execute `rustlings hint if2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+// I AM NOT_DONE
+
+pub fn foo_if_fizz_1(fizzish: &str) -> &str {
+  if fizzish == "fizz" {
+    "foo"
+  } else if fizzish == "fuzz" {
+    "bar"
+  } else {
+    "baz"
+  }
+}
 
 pub fn foo_if_fizz(fizzish: &str) -> &str {
-    if fizzish == "fizz" {
-        "foo"
-    } else {
-        1
-    }
+  if fizzish == "fizz" {
+    return "foo"
+  }
+  
+  if fizzish == "fuzz" {
+    return "bar"
+  }
+
+  "baz"
 }
 
 // No test changes needed!
 #[cfg(test)]
 mod tests {
-    use super::*;
+  use super::*;
 
-    #[test]
-    fn foo_for_fizz() {
-        assert_eq!(foo_if_fizz("fizz"), "foo")
-    }
+  #[test]
+  fn foo_for_fizz() {
+    assert_eq!(foo_if_fizz("fizz"), "foo")
+  }
 
-    #[test]
-    fn bar_for_fuzz() {
-        assert_eq!(foo_if_fizz("fuzz"), "bar")
-    }
+  #[test]
+  fn bar_for_fuzz() {
+    assert_eq!(foo_if_fizz("fuzz"), "bar")
+  }
 
-    #[test]
-    fn default_to_baz() {
-        assert_eq!(foo_if_fizz("literally anything"), "baz")
-    }
+  #[test]
+  fn default_to_baz() {
+    assert_eq!(foo_if_fizz("literally anything"), "baz")
+  }
 }

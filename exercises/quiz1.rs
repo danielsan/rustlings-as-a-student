@@ -13,10 +13,12 @@
 //
 // No hints this time ;)
 
-// I AM NOT DONE
+// I AM NOT_DONE
 
 // Put your function here!
-// fn calculate_price_of_apples {
+fn calculate_price_of_apples (n:i8) -> i16 {
+  if (n < 41) { (n * 2).into() } else { n.into() }
+}
 
 // Don't modify this function!
 #[test]

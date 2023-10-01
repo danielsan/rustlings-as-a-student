@@ -3,7 +3,8 @@
 // Fill in the rest of the line that has code missing! No hints, there's no
 // tricks, just get used to typing these :)
 
-// I AM NOT DONE
+// I AM NOT_DONE
+// use rand::prelude::*;
 
 fn main() {
     // Characters (`char`)
@@ -19,14 +20,16 @@ fn main() {
         println!("Neither alphabetic nor numeric!");
     }
 
-    let // Finish this line like the example! What's your favorite character?
+    // let x: u8 = random();
+    let x: u8 = 35;
+    let your_character: char = char::from_u32(x.into()).unwrap();// Finish this line like the example! What's your favorite character?
     // Try a letter, try a number, try a special character, try a character
     // from a different language than your own, try an emoji!
     if your_character.is_alphabetic() {
-        println!("Alphabetical!");
+        println!("Alphabetical: [{}] -> {}", your_character, x);
     } else if your_character.is_numeric() {
-        println!("Numerical!");
+        println!("Numerical: [{}] -> {}", your_character, x);
     } else {
-        println!("Neither alphabetic nor numeric!");
+        println!("Neither alphabetic nor numeric: [{}] -> {}", your_character, x);
     }
 }
