@@ -31,7 +31,7 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 
-// I AM NOT DONE
+// I AM DONE
 
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
@@ -52,6 +52,25 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.len() == 0 { return Err(ParsePersonError::Empty); }
+        if !s.contains(',') { return Err(ParsePersonError::BadLen); }
+
+        let mut split = s.split(',');
+        let name = match split.next().unwrap() {
+            "" => return Err(ParsePersonError::NoName),
+            name => String::from(name),
+        };
+
+        let age = match split.next().unwrap_or("").parse::<usize>() {
+            Ok(age) => age,
+            Err(e) => return Err(ParsePersonError::ParseInt(e))
+        };
+
+        if split.next().is_some() {
+            return Err(ParsePersonError::BadLen);
+        }
+
+        Ok(Person { name, age })
     }
 }
 

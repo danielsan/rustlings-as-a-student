@@ -7,25 +7,60 @@
 // Execute `rustlings hint as_ref_mut` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// I AM DONE
 
 // Obtain the number of bytes (not characters) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
-fn byte_counter<T>(arg: T) -> usize {
+fn byte_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().as_bytes().len()
 }
 
 // Obtain the number of characters (not bytes) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
-fn char_counter<T>(arg: T) -> usize {
+fn char_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().chars().count()
 }
 
 // Squares a number using as_mut().
 // TODO: Add the appropriate trait bound.
-fn num_sq<T>(arg: &mut T) {
+fn num_sq<T: AsMut<u32>>(arg: &mut T) {
     // TODO: Implement the function body.
-    ???
+    let temp = arg.as_mut();
+    *temp = *temp * *temp;
+}
+
+struct Document {
+    info: String,
+    something: Vec<u8>,
+    content: Vec<u8>,
+}
+
+impl<T: ?Sized> AsMut<T> for Document
+where
+    Vec<u8>: AsMut<T>,
+{
+    fn as_mut(&mut self) -> &mut T {
+        self.content.as_mut()
+    }
+}
+
+fn caesar<T: AsMut<[u8]>>(data: &mut T, key: u8) {
+    for byte in data.as_mut() {
+        *byte = byte.wrapping_add(key);
+    }
+}
+
+
+fn null_terminate<T: AsMut<Vec<u8>>>(data: &mut T) {
+    // Using a non-generic inner function, which contains most of the
+    // functionality, helps to minimize monomorphization overhead.
+    fn doit(data: &mut Vec<u8>) {
+        let len = data.len();
+        if len == 0 || data[len-1] != 0 {
+            data.push(0);
+        }
+    }
+    doit(data.as_mut());
 }
 
 #[cfg(test)]
@@ -61,5 +96,28 @@ mod tests {
         let mut num: Box<u32> = Box::new(3);
         num_sq(&mut num);
         assert_eq!(*num, 9);
+    }
+
+    #[test]
+    fn as_mut_funcs() {
+        let mut v: Vec<u8> = vec![1, 2, 3];
+        caesar(&mut v, 5);
+        assert_eq!(v, [6, 7, 8]);
+
+        null_terminate(&mut v);
+        assert_eq!(v, [6, 7, 8, 0]);
+
+        let mut doc = Document {
+            info: String::from("Example"),
+            content: vec![17, 19, 8],
+            something: vec![1, 2, 3],
+        };
+        caesar(&mut doc, 1);
+        assert_eq!(doc.content, [18, 20, 9]);
+        assert_eq!(doc.something, [1,2 ,3]);
+        
+        null_terminate(&mut doc);
+        assert_eq!(doc.content, [18, 20, 9, 0]);
+        assert_eq!(doc.something, [1,2 ,3]);
     }
 }
