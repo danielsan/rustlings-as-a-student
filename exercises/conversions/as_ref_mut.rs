@@ -9,6 +9,8 @@
 
 // I AM DONE
 
+use std::fmt::Error;
+
 // Obtain the number of bytes (not characters) in the given argument.
 // TODO: Add the AsRef trait appropriately as a trait bound.
 fn byte_counter<T: AsRef<str>>(arg: T) -> usize {
